@@ -52,32 +52,31 @@ def _character(lam: tuple[int, ...], mu: tuple[int, ...]) -> int:
     return total
 
 
-def character(lam: list[int], cycle_type: tuple[int, ...]) -> int:
+def character(lam: tuple[int, ...], cycle_type: tuple[int, ...]) -> int:
     """chi^lam(cycle_type): the irreducible character of S_n indexed by the partition
     lam, evaluated on the conjugacy class of cycle type cycle_type.
 
     Examples:
-        >>> character([3], [1, 1, 1])       # trivial rep
+        >>> character((3,), (1, 1, 1))       # trivial rep
         1
-        >>> character([1, 1, 1], [2, 1])    # sign rep at a transposition
+        >>> character((1, 1, 1), (2, 1))    # sign rep at a transposition
         -1
-        >>> character([2, 1], [1, 1, 1])    # dimension of the standard rep
+        >>> character((2, 1), (1, 1, 1))    # dimension of the standard rep
         2
-        >>> character([2, 1], [3])
+        >>> character((2, 1), (3,))
         -1
-        >>> character([2, 1], [2, 1])
+        >>> character((2, 1), (2, 1))
         0
     """
-    lamt = tuple(lam)
     cycle_type = tuple(sorted((x for x in cycle_type if x > 0), reverse=True))
     if sum(lam) != sum(cycle_type):
         raise ValueError(f"size mismatch: |{lam}| != |{cycle_type}|")
-    return _character(lamt, cycle_type)
+    return _character(lam, cycle_type)
 
 
 def character_table(n: int):
     """(rows, cols, table) with rows/cols the partitions of n in the order
     produced by partitions(n), and table[a][b] = chi^{rows[a]}(cols[b])."""
-    ps = [tuple(p) for p in partitions(n)]
-    table = [[character(list(lam), mu) for mu in ps] for lam in ps]
+    ps = list(partitions(n))
+    table = [[character(lam, mu) for mu in ps] for lam in ps]
     return ps, ps, table

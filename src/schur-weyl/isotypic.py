@@ -11,11 +11,11 @@ def _perm_index_map(sigma, d):
     return np.transpose(idx, axes=permutation_inverse(sigma)).reshape(-1)
 
 
-def isotypic_proj(lam: list[int], d: int) -> np.ndarray:
+def isotypic_proj(lam: tuple[int, ...], d: int) -> np.ndarray:
     """Return the isotypic projector acting on $(C^d)^{\\otimes k}$
 
     Args:
-        lam (list[int]): The partition k = sum(lam)
+        lam (tuple[int, ...]): The partition k = sum(lam)
         d (int): The basis dimension
 
     Returns:

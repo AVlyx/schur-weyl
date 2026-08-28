@@ -1,12 +1,12 @@
 import numpy as np
 
 
-def schur_polynomial(lam: list[int], xs: list[float]) -> float:
+def schur_polynomial(lam: tuple[int, ...], xs: list[float]) -> float:
     """Get the schur polynomial of a partition evaluated on input xs
     Not very precise above len(lam) = 7
 
     Args:
-        lam (list[int]): The partition
+        lam (tuple[int, ...]): The partition
         xs (list[float]): The input variables
 
     Returns:
@@ -15,7 +15,7 @@ def schur_polynomial(lam: list[int], xs: list[float]) -> float:
     return _jacobi_trudi(lam, xs)
 
 
-def _jacobi_trudi(lam: list[int], xs: list[float]) -> float:
+def _jacobi_trudi(lam: tuple[int, ...], xs: list[float]) -> float:
     """Not very precise above len(lam) = 7. Could use an other det formula"""
     if not lam:
         return 1.0
@@ -45,17 +45,17 @@ def h_0_to_k(k: int, xs: list[float]) -> list[float]:
     return h_i
 
 
-def power_sum(mu: list[int], xs: list[float]) -> object:
+def power_sum(mu: tuple[int, ...], xs: list[float]) -> object:
     """p_mu(x) = prod_i (sum_j x_j^{mu_i}).
 
     Examples:
-        >>> power_sum([1], [2, 3])        # p_1 = 2 + 3
+        >>> power_sum((1,), [2, 3])        # p_1 = 2 + 3
         5
-        >>> power_sum([2], [2, 3])        # p_2 = 4 + 9
+        >>> power_sum((2,), [2, 3])        # p_2 = 4 + 9
         13
-        >>> power_sum([2, 1], [2, 3])     # p_2 * p_1 = 13 * 5
+        >>> power_sum((2, 1), [2, 3])     # p_2 * p_1 = 13 * 5
         65
-        >>> power_sum([], [2, 3])
+        >>> power_sum((), [2, 3])
         1
     """
     result = 1
