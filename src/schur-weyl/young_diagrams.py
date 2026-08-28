@@ -68,9 +68,9 @@ def hook_lenght(lam: list[int], i: int, j: int) -> int:
         int: The hook lenght
 
     Examples:
-        >>> hook([4, 3, 1], 0, 0)
+        >>> hook_lenght([4, 3, 1], 0, 0)
         6
-        >>> hook([4, 3, 3, 2], 2, 1)
+        >>> hook_lenght([4, 3, 3, 2], 2, 1)
         3
     """
     return (lam[i] - j) + sum(1 for l in range(i + 1, len(lam)) if lam[l] > j)  # (arm + 1) + leg
@@ -168,3 +168,23 @@ def removable_corners(lam: list[int]):
     for i in range(len(lam) - 2, -1, -1):
         if lam[i] != lam[i + 1]:
             yield i, lam[i] - 1
+
+
+def is_in_partition(lam: list[int], i: int, j: int) -> bool:
+    """Returns true if a cell is in the partition lam
+
+    Args:
+        lam (list[int]): the partition
+        i (int): the row index (0-indexed)
+        j (int): the column index (0-indexed)
+
+    Returns:
+        bool: true if (i, j) in lam
+
+    Examples:
+        >>> is_in_partition([2,1], 1, 1)
+        False
+        >>> is_in_partition([2,1], 1, 0)
+        True
+    """
+    return len(lam) > i and lam[i] > j
