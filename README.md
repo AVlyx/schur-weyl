@@ -69,10 +69,6 @@ pytest
 
 Tests live in [`tests/`](tests) and mirror the module layout; most assert the closed-form identities from the roadmap (e.g. $\sum_\lambda (f^\lambda)^2 = n!$, character-table orthogonality, $P_\lambda^2 = P_\lambda$, $\operatorname{tr}\rho^\lambda(X_k)$ diagonal with content eigenvalues) rather than fixed expected outputs.
 
-## Status
-
-Implemented through Young's orthogonal form and Jucys–Murphy elements (roadmap phases 0–5, 7–9). Not yet implemented: the generic tensor-space permutation action as a standalone module (phase 6, currently inlined in `isotypic`), and the explicit Schur transform (phase 10). See [`TODO.md`](TODO.md) for near-term items.
-
 ## License
 
 MIT — see [LICENSE](LICENSE).
