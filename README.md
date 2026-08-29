@@ -8,8 +8,6 @@ $$(\mathbb{C}^d)^{\otimes n} \cong \bigoplus_{\lambda} S^\lambda \otimes V_\lamb
 
 This package implements the combinatorics and linear algebra needed to work with that decomposition directly: partitions and Young tableaux, dimension formulas, symmetric-group characters via Murnaghan–Nakayama, Schur polynomials, isotypic projectors on tensor space, the Schur–Weyl measure, and Young's orthogonal form for the irreducible representations of $S_n$.
 
-Every module is checked against an exact mathematical identity in the test suite (Burnside's identity, character orthogonality, projector idempotence, unitarity of Young's orthogonal form, the Jucys–Murphy diagonalization, ...) rather than against hand-computed examples alone. See [`.selfDoc/schur_weyl_roadmap.md`](.selfDoc/schur_weyl_roadmap.md) for the full design roadmap and the identities each phase is gated on.
-
 ## Installation
 
 Requires Python ≥ 3.9.
