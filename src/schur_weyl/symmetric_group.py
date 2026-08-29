@@ -117,10 +117,10 @@ def permutation_conjugacy_class_size(cycle_type: tuple[int, ...]) -> int:
         >>> permutation_conjugacy_class_size((1,1,1,1))
         1
         >>> permutation_conjugacy_class_size((2,1,1))
-        12
+        6
     """
     counts = Counter(cycle_type)
     z = 1
     for cycle_len, cycle_count in counts.items():
-        z = cycle_len**cycle_count * factorial(cycle_count)
+        z *= cycle_len**cycle_count * factorial(cycle_count)
     return factorial(sum(cycle_type)) // z

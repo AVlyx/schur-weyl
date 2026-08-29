@@ -45,7 +45,7 @@ def h_0_to_k(k: int, xs: list[float]) -> list[float]:
     return h_i
 
 
-def power_sum(mu: tuple[int, ...], xs: list[float]) -> object:
+def power_sum(mu: tuple[int, ...], xs: list[float]) -> float:
     """p_mu(x) = prod_i (sum_j x_j^{mu_i}).
 
     Examples:
