@@ -3,7 +3,7 @@
 # Made by Claude
 
 from functools import lru_cache
-from young_diagrams import partitions
+from .young_diagrams import partitions
 
 # ------------------------------------------------------------- border strips
 

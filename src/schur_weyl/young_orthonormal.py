@@ -13,8 +13,8 @@ Conventions (consistent with the rest of the project):
 from functools import lru_cache
 
 import numpy as np
-from tableaux import standard_young_tableaux
-from dimensions import dim_specht
+from .tableaux import standard_young_tableaux
+from .dimensions import dim_specht
 
 # ------------------------------------------------------------------ tableaux
 

@@ -1,7 +1,7 @@
 import numpy as np
-from symmetric_group import all_permutations_by_cycle_type, permutation_inverse
-from character import character
-from dimensions import dim_specht
+from .symmetric_group import all_permutations_by_cycle_type, permutation_inverse
+from .character import character
+from .dimensions import dim_specht
 from math import factorial
 
 

@@ -1,5 +1,5 @@
 from typing import Generator
-from young_diagrams import removable_corners
+from .young_diagrams import removable_corners
 
 
 def standard_young_tableaux(lam: tuple[int, ...]) -> Generator[tuple[tuple[int, ...], ...]]:

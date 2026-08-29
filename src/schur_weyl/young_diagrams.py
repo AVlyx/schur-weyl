@@ -49,7 +49,11 @@ def partition_conjugate(lam: tuple[int, ...]) -> tuple[int, ...]:
     Examples:
         >>> partition_conjugate((4, 3, 1))
         (3, 2, 2, 1)
+        >>> partition_conjugate(())
+        ()
     """
+    if not lam:
+        return ()
     result: list[int] = [0] * lam[0]
     for p in lam:
         for j in range(p):

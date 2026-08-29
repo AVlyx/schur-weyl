@@ -1,5 +1,5 @@
 from math import factorial
-from young_diagrams import cells, hook_lenght
+from .young_diagrams import cells, hook_lenght
 
 
 def dim_specht(lam: tuple[int, ...]) -> int:

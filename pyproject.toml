@@ -19,4 +19,4 @@ dev = ["pytest", "ruff"]
 Homepage = "https://github.com/AVlyx/schur-weyl"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/schur-weyl"]
+packages = ["src/schur_weyl"]

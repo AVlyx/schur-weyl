@@ -1,7 +1,7 @@
 import numpy as np
-from young_diagrams import partitions
-from dimensions import dim_specht
-from symmetric_functions import schur_polynomial
+from .young_diagrams import partitions
+from .dimensions import dim_specht
+from .symmetric_functions import schur_polynomial
 
 
 def schur_weyl_measure(spectrum: list[float], k: int) -> dict[tuple[int, ...], float]:
