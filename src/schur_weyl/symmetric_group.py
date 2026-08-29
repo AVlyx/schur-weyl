@@ -41,14 +41,14 @@ def permutation_inverse(sigma: tuple[int, ...]) -> tuple[int, ...]:
     return tuple(result)
 
 
-def all_permutations(n: int) -> Generator[tuple[int, ...]]:
+def all_permutations(n: int) -> Generator[tuple[int, ...], None, None]:
     """All permutations of Sn
 
     Args:
         n (int): n
 
     Yields:
-        Generator[tuple[int, ...]]: the permutations
+        Generator[tuple[int, ...], None, None]: the permutations
     """
     for p in permutations(range(n)):
         yield p

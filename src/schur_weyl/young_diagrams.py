@@ -1,7 +1,7 @@
 from typing import Generator, Optional
 
 
-def partitions(k: int, max_part: Optional[int] = None, max_height: Optional[int] = None) -> Generator[tuple[int, ...]]:
+def partitions(k: int, max_part: Optional[int] = None, max_height: Optional[int] = None) -> Generator[tuple[int, ...], None, None]:
     """Generate the partitions of k. All the non-increasing vectors of positive integers summing to k.
 
     Args:
@@ -10,7 +10,7 @@ def partitions(k: int, max_part: Optional[int] = None, max_height: Optional[int]
         max_height (Optional[int], optional): The maximum number of rows. Defaults to None.
 
     Yields:
-        Generator[tuple[int, ...]]: The partitions.
+        Generator[tuple[int, ...], None, None]: The partitions.
 
     Examples:
         >>> list(partitions(4))
@@ -80,14 +80,14 @@ def hook_lenght(lam: tuple[int, ...], i: int, j: int) -> int:
     return (lam[i] - j) + sum(1 for l in range(i + 1, len(lam)) if lam[l] > j)  # (arm + 1) + leg
 
 
-def cells(lam: tuple[int, ...]) -> Generator[tuple[int, int]]:
+def cells(lam: tuple[int, ...]) -> Generator[tuple[int, int], None, None]:
     """All the cells index of a partition
 
     Args:
         lam (tuple[int, ...]): The partition
 
     Yields:
-        Generator[tuple[int, int]]: the indexes (0-indexed)
+        Generator[tuple[int, int], None, None]: the indexes (0-indexed)
 
     Examples:
         >>> list(cells((3, 2, 1)))
@@ -129,14 +129,14 @@ def majorizes(lam: tuple[int, ...], nu: tuple[int, ...]) -> bool:
     return True
 
 
-def addable_corners(lam: tuple[int, ...]) -> Generator[tuple[int, int]]:
+def addable_corners(lam: tuple[int, ...]) -> Generator[tuple[int, int], None, None]:
     """The cells that can be added to still obtain a valid partition
 
     Args:
         lam (tuple[int, ...]): The partition
 
     Yields:
-        Generator[tuple[int, int]]: The indexes of the cells
+        Generator[tuple[int, int], None, None]: The indexes of the cells
 
     Examples:
         >>> list(addable_corners((2, 2, 1)))
@@ -153,14 +153,14 @@ def addable_corners(lam: tuple[int, ...]) -> Generator[tuple[int, int]]:
     yield len(lam), 0
 
 
-def removable_corners(lam: tuple[int, ...]):
+def removable_corners(lam: tuple[int, ...]) -> Generator[tuple[int, int], None, None]:
     """The cells that can be removed to still obtain a valid partition
 
     Args:
         lam (tuple[int, ...]): The partition
 
     Yields:
-        Generator[tuple[int, int]]: The indexes of the cells
+        Generator[tuple[int, int], None, None]: The indexes of the cells
 
     Examples:
         >>> list(removable_corners((2, 2, 1)))

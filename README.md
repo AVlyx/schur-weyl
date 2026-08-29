@@ -57,7 +57,7 @@ character((2, 1), (3,))     # -> -1
 
 # the Schur-Weyl measure for n i.i.d. copies of a state with given spectrum
 schur_weyl_measure(spectrum=[0.7, 0.3], k=4)
-# -> {(4,): 0.2401, (3, 1): 0.4116, (2, 2): 0.1323, (2, 1, 1): 0.0189, ...}
+# -> {(4,): 0.4141, (3, 1): 0.4977, (2, 2): 0.0882, (2, 1, 1): 0.0, (1, 1, 1, 1): 0.0}
 
 # the isotypic projector on (C^d)^{\otimes n}
 P = isotypic_proj((2, 1), d=2)   # np.ndarray, P @ P == P

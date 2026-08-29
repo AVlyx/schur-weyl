@@ -2,14 +2,14 @@ from typing import Generator
 from .young_diagrams import removable_corners
 
 
-def standard_young_tableaux(lam: tuple[int, ...]) -> Generator[tuple[tuple[int, ...], ...]]:
+def standard_young_tableaux(lam: tuple[int, ...]) -> Generator[tuple[tuple[int, ...], ...], None, None]:
     """Generates all SYT of a given shape
 
     Args:
         lam (tuple[int, ...]): The partition
 
     Yields:
-        Generator[tuple[tuple[int, ...], ...]]: a SYT
+        Generator[tuple[tuple[int, ...], ...], None, None]: a SYT
 
     Examples:
         >>> list(standard_young_tableaux(()))
@@ -26,7 +26,7 @@ def standard_young_tableaux(lam: tuple[int, ...]) -> Generator[tuple[tuple[int, 
     ret: list[list[int]] = [[-1] * li for li in lam]
     ret[0][0] = 1
 
-    def syt_rec(small_lam: list[int], d: int) -> Generator[tuple[tuple[int, ...], ...]]:
+    def syt_rec(small_lam: list[int], d: int) -> Generator[tuple[tuple[int, ...], ...], None, None]:
         if len(small_lam) == 1 and small_lam[0] == 1:
             yield tuple(tuple(row) for row in ret)
             return
@@ -45,7 +45,7 @@ def standard_young_tableaux(lam: tuple[int, ...]) -> Generator[tuple[tuple[int, 
     yield from syt_rec(list(lam), sum(lam))
 
 
-def semi_standard_young_tableau(lam: tuple[int, ...], d: int) -> Generator[tuple[tuple[int, ...], ...]]:
+def semi_standard_young_tableau(lam: tuple[int, ...], d: int) -> Generator[tuple[tuple[int, ...], ...], None, None]:
     """Generate all SSYT of a given shape and alphabet
 
     Args:
@@ -53,7 +53,7 @@ def semi_standard_young_tableau(lam: tuple[int, ...], d: int) -> Generator[tuple
         d (int): the alphabet size
 
     Yields:
-        Generator[tuple[tuple[int, ...], ...]]: The SSYT
+        Generator[tuple[tuple[int, ...], ...], None, None]: The SSYT
 
     Examples:
         >>> list(semi_standard_young_tableau((2, 1), 3))
@@ -65,7 +65,7 @@ def semi_standard_young_tableau(lam: tuple[int, ...], d: int) -> Generator[tuple
     ret: list[list[int]] = [[-1] * li for li in lam]
     maxv: list[list[int]] = [[d + 1] * li for li in lam]
 
-    def fill(i: int, j: int, minv: int) -> Generator[tuple[tuple[int, ...], ...]]:
+    def fill(i: int, j: int, minv: int) -> Generator[tuple[tuple[int, ...], ...], None, None]:
         if j >= lam[i]:
             if i == 0:
                 yield tuple(tuple(row) for row in ret)
@@ -82,7 +82,7 @@ def semi_standard_young_tableau(lam: tuple[int, ...], d: int) -> Generator[tuple
     yield from fill(len(lam) - 1, 0, len(lam))
 
 
-def semi_standard_young_tableau_by_content(lam: tuple[int, ...], content: tuple[int, ...]) -> Generator[tuple[tuple[int, ...], ...]]:
+def semi_standard_young_tableau_by_content(lam: tuple[int, ...], content: tuple[int, ...]) -> Generator[tuple[tuple[int, ...], ...], None, None]:
     """Generate all SSYT with given content
 
     Args:
@@ -90,7 +90,7 @@ def semi_standard_young_tableau_by_content(lam: tuple[int, ...], content: tuple[
         content (tuple[int, ...]): The content (Should satisfy sum(lam) == sum(content))
 
     Yields:
-        Generator[tuple[tuple[int, ...], ...]]: a SSYT
+        Generator[tuple[tuple[int, ...], ...], None, None]: a SSYT
 
     Examples:
         >>> list(semi_standard_young_tableau_by_content((2, 1), (2, 1)))
@@ -111,7 +111,7 @@ def semi_standard_young_tableau_by_content(lam: tuple[int, ...], content: tuple[
     ret: list[list[int]] = [[-1] * li for li in lam]
     maxv: list[list[int]] = [[d + 1] * li for li in lam]
 
-    def fill(i: int, j: int, minv: int) -> Generator[tuple[tuple[int, ...], ...]]:
+    def fill(i: int, j: int, minv: int) -> Generator[tuple[tuple[int, ...], ...], None, None]:
         if j >= lam[i]:
             if i == 0:
                 yield tuple(tuple(row) for row in ret)
