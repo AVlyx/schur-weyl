@@ -1,0 +1,149 @@
+.card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 24px 0;
+  text-align: left;
+  background: var(--bg);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  align-items: center;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 16px;
+}
+
+.label {
+  font-size: 14px;
+  font-family: var(--mono);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.label input[type='range'] {
+  accent-color: var(--accent);
+  width: 130px;
+}
+
+.value {
+  color: var(--accent);
+  min-width: 2.5em;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.hint {
+  font-size: 14px;
+  color: var(--text);
+  margin-top: 12px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.tab {
+  font: inherit;
+  font-size: 14px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.tabActive {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+.scroll {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.table {
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 15px;
+}
+
+.table th,
+.table td {
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  text-align: center;
+  color: var(--text-h);
+}
+
+.table th {
+  background: var(--code-bg);
+}
+
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.barShape {
+  width: 90px;
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.barTrack {
+  flex: 1 1 auto;
+  height: 14px;
+  border-radius: 7px;
+  background: var(--code-bg);
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.15s;
+}
+
+.barValue {
+  font-family: var(--mono);
+  font-size: 14px;
+  width: 5em;
+  flex: 0 0 auto;
+  text-align: right;
+}

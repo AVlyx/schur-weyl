@@ -1,29 +1,33 @@
 .outer {
   display: flex;
   border-radius: 12px;
-  border: 2px solid black;
+  border: 1px solid var(--border);
   padding: 24px;
-  width: 400px;
-  height: 200px;
+  width: 100%;
+  min-height: 180px;
+  box-sizing: border-box;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
 }
 
 .arrow {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
   width: 32px;
   height: 32px;
-  border: 1px solid black;
+  border: 1px solid var(--border);
   border-radius: 50%;
-  background-color: white;
+  background-color: var(--bg);
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  color: black;
+  color: var(--text-h);
 }
 
 .arrow:hover {
-  background-color: #8d8d8d;
+  background-color: var(--accent-bg);
+  border-color: var(--accent-border);
 }

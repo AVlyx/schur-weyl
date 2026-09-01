@@ -22,7 +22,7 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
 
-    "baseUrl": ".",
+    /* `paths` resolves relative to this file; `baseUrl` is deprecated in TS 6. */
     "paths": {
       "@/*": ["./src/*"]
     }

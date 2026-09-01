@@ -1,0 +1,17 @@
+.pre {
+  margin: 0;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--code-bg);
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 160%;
+  text-align: left;
+}
+
+.line {
+  display: block;
+  min-height: 1em;
+}

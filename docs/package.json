@@ -10,8 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/react-katex": "^3.0.4",
+    "katex": "^0.18.5",
+    "prism-react-renderer": "^2.4.1",
+    "prop-types": "^15.8.1",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "react-katex": "^3.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

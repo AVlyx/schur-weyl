@@ -1,13 +1,24 @@
 .box {
-  border: 2px solid black;
-  width: 40px;
-  height: 40px;
+  --bw: max(1px, calc(var(--box) * 0.05));
+  border: var(--bw) solid var(--text-h);
+  width: var(--box);
+  height: var(--box);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: -2px;
-  margin-bottom: -2px;
-  background-color: white;
+  margin-right: calc(-1 * var(--bw));
+  margin-bottom: calc(-1 * var(--bw));
+  background-color: var(--bg);
+  box-sizing: border-box;
+  font-family: var(--mono);
+  font-size: calc(var(--box) * 0.45);
+  color: var(--text-h);
+  transition: background-color 0.15s;
+}
+
+.highlighted {
+  background-color: var(--accent-bg);
+  color: var(--accent);
 }
 
 .outer {
