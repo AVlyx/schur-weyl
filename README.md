@@ -1,5 +1,8 @@
 # schur-weyl
 
+[![Documentation](https://img.shields.io/badge/docs-readthedocs-blue?style=for-the-badge&logo=readthedocs&logoColor=white)](https://avlyx.github.io/schur-weyl/)
+[![PyPI](https://img.shields.io/badge/pypi-package-blue?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/schur-weyl/)
+
 Tools from Schur–Weyl duality, built from scratch on top of `numpy` and the Python standard library — no representation-theory or combinatorics dependencies.
 
 Schur–Weyl duality decomposes $(\mathbb{C}^d)^{\otimes n}$ under the commuting actions of $S_n$ (permuting tensor factors) and $GL_d$ (acting diagonally) into isotypic blocks indexed by partitions $\lambda \vdash n$ with $\ell(\lambda) \le d$:
@@ -50,7 +53,7 @@ from schur_weyl.sw_measure import schur_weyl_measure
 dim_specht((2, 1))          # -> 2, the standard rep of S_3
 dim_weyl((2, 1), d=3)       # -> 8
 
-# characters via Murnaghan-Nakayama
+# characters
 character((2, 1), (3,))     # -> -1
 
 # the Schur-Weyl measure for n i.i.d. copies of a state with given spectrum
@@ -67,7 +70,7 @@ P = isotypic_proj((2, 1), d=2)   # np.ndarray, P @ P == P
 pytest
 ```
 
-Tests live in [`tests/`](tests) and mirror the module layout; most assert the closed-form identities from the roadmap (e.g. $\sum_\lambda (f^\lambda)^2 = n!$, character-table orthogonality, $P_\lambda^2 = P_\lambda$, $\operatorname{tr}\rho^\lambda(X_k)$ diagonal with content eigenvalues) rather than fixed expected outputs.
+Tests live in [`tests/`](tests) and mirror the module layout; most assert the closed-form identities from the roadmap (e.g. $\sum_\lambda (f^\lambda)^2 = n!$, character-table orthogonality, $P_\lambda^2 = P_\lambda$, $tr\rho^\lambda(X_k)$ diagonal with content eigenvalues) rather than fixed expected outputs.
 
 ## License
 
