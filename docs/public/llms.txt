@@ -1,0 +1,142 @@
+# schur-weyl
+
+> Tools from Schur-Weyl duality for Python: partitions, Young tableaux, symmetric-group
+> characters, Schur polynomials, isotypic projectors and the Schur-Weyl measure. Built from
+> scratch on `numpy` and the standard library, with no representation-theory or combinatorics
+> dependencies.
+
+Schur-Weyl duality splits `(C^d)^(tensor n)` under the commuting actions of `S_n` (permuting the
+tensor factors) and `GL_d` (acting diagonally) into blocks indexed by partitions `lambda |- n`
+with `len(lambda) <= d`:
+
+    (C^d)^(tensor n)  =  direct sum over lambda of  S^lambda (x) V_lambda^d
+
+This package gives you both sides of that sum: the combinatorics of `lambda`, and the linear
+algebra that projects onto each block.
+
+Conventions used throughout: partitions are plain tuples in weakly decreasing order, tableaux are
+tuples of tuples, and permutations are 0-indexed one-line tuples. Nothing is a custom class, so
+everything composes with ordinary Python. Requires Python >= 3.9; the only runtime dependency is
+`numpy`.
+
+## Install
+
+```bash
+pip install schur-weyl
+```
+
+For local development (clone the repo, run the tests), install editable with the `dev` extra,
+which pulls in `pytest` and `ruff`:
+
+```bash
+pip install -e ".[dev]"
+```
+
+## Quick start
+
+```python
+from schur_weyl import partitions, dim_specht, dim_weyl, isotypic_proj
+from schur_weyl.character import character
+from schur_weyl.sw_measure import schur_weyl_measure
+
+[*partitions(4)]
+# [(4,), (3, 1), (2, 2), (2, 1, 1), (1, 1, 1, 1)]
+
+dim_specht((2, 1))            # 2   -- the standard rep of S_3
+dim_weyl((2, 1), d=3)         # 8
+
+character((2, 1), (3,))       # -1  -- Murnaghan-Nakayama
+
+schur_weyl_measure([0.7, 0.3], k=4)
+# {(4,): 0.4141, (3, 1): 0.4977, (2, 2): 0.0882, ...}
+
+P = isotypic_proj((2, 1), d=2)   # np.ndarray, P @ P == P
+```
+
+## Young diagrams
+
+A partition `lambda = (lambda_1 >= lambda_2 >= ...)` is drawn as rows of boxes. The *hook* of a
+box is the box itself plus everything to its right and everything below it; the hook-length
+formula turns those numbers into the dimension of the Specht module:
+
+    f^lambda = n! / product over boxes (i,j) in lambda of h(i,j)
+
+```python
+from schur_weyl import partitions, partition_conjugate, hook_lenght, dim_specht
+
+[*partitions(5, max_part=2)]        # [(2, 2, 1), (2, 1, 1, 1), (1, 1, 1, 1, 1)]
+partition_conjugate((4, 3, 1))      # (3, 2, 2, 1)   -- transpose the diagram
+hook_lenght((4, 3, 1), 0, 0)        # 6
+dim_specht((3, 2, 1))               # 16
+```
+
+## Tableaux
+
+Fill the diagram with numbers. A **standard** tableau uses `1, ..., n` once each, increasing along
+rows and down columns -- there are `f^lambda` of them. A **semistandard** tableau draws entries
+from `1, ..., d` with repeats allowed, weakly increasing along rows and strictly increasing down
+columns -- there are `dim V_lambda^d` of them.
+
+```python
+from schur_weyl import standard_young_tableaux, semi_standard_young_tableau, kostka
+
+[*standard_young_tableaux((2, 1))]
+# [((1, 2), (3,)), ((1, 3), (2,))]
+
+[*semi_standard_young_tableau((2, 1), 2)]
+# [((1, 1), (2,)), ((1, 2), (2,))]
+
+kostka((2, 1), (1, 1, 1))           # 2
+```
+
+## Characters
+
+`chi^lambda(mu)` is the character of the irreducible representation `S^lambda` on the conjugacy
+class of cycle type `mu`, computed by peeling border strips off `lambda` (Murnaghan-Nakayama).
+Distinct rows of the character table are orthogonal.
+
+```python
+from schur_weyl.character import character, character_table
+
+character((2, 1), (3,))             # -1
+character((3, 1), (2, 1, 1))        #  1
+
+rows, cols, table = character_table(5)
+```
+
+## Schur-Weyl measure
+
+Measure `k` i.i.d. copies of a state `rho` in the Schur basis and you get a random partition, with
+
+    Pr[lambda] = f^lambda * s_lambda(spec rho)
+
+This is the distribution behind spectrum estimation and quantum tomography.
+
+```python
+from schur_weyl.sw_measure import schur_weyl_measure
+
+schur_weyl_measure(spectrum=[0.7, 0.3], k=4)
+# {(4,): 0.4141, (3, 1): 0.4977, (2, 2): 0.0882,
+#  (2, 1, 1): 0.0, (1, 1, 1, 1): 0.0}
+```
+
+## Module reference
+
+- [young_diagrams](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/young_diagrams.py): Partitions, conjugation, hook lengths, content, dominance order, addable/removable corners
+- [dimensions](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/dimensions.py): `dim_specht` (Specht module dimension, hook-length formula) and `dim_weyl` (Weyl module dimension, content formula)
+- [tableaux](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/tableaux.py): Standard and semistandard Young tableaux, Kostka numbers, reading words
+- [symmetric_group](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/symmetric_group.py): Permutations as 0-indexed one-line tuples: composition, inverse, cycle type, conjugacy class sizes
+- [character](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/character.py): Irreducible characters of `S_n` via the Murnaghan-Nakayama rule; full character tables
+- [symmetric_functions](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/symmetric_functions.py): Schur polynomials (Jacobi-Trudi) and power-sum symmetric functions
+- [isotypic](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/isotypic.py): Isotypic projectors on tensor space, built from class sums of the permutation action
+- [sw_measure](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/sw_measure.py): The Schur-Weyl measure for i.i.d. copies of a state
+- [young_orthonormal](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/young_orthonormal.py): Young's orthogonal form: explicit irrep matrices indexed by standard tableaux, and the Jucys-Murphy elements
+
+Every function carries a docstring with worked examples.
+
+## Optional
+
+- [Documentation site](https://avlyx.github.io/schur-weyl/): the same material with interactive figures for diagrams, tableaux, characters and the measure
+- [Source repository](https://github.com/AVlyx/schur-weyl): full source, MIT licensed
+- [PyPI package](https://pypi.org/project/schur-weyl/): released versions
+- [Test suite](https://github.com/AVlyx/schur-weyl/tree/main/tests): checks closed-form identities (sum of `(f^lambda)^2 = n!`, character orthogonality, `P_lambda^2 = P_lambda`) rather than fixed outputs

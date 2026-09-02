@@ -5,7 +5,7 @@ with interactive figures, built with Vite + React.
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
+npm run dev      # http://localhost:5173/schur-weyl/
 npm run build    # -> dist/
 ```
 
