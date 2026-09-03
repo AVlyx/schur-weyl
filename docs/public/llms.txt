@@ -1,9 +1,9 @@
 # schur-weyl
 
 > Tools from Schur-Weyl duality for Python: partitions, Young tableaux, symmetric-group
-> characters, Schur polynomials, isotypic projectors and the Schur-Weyl measure. Built from
-> scratch on `numpy` and the standard library, with no representation-theory or combinatorics
-> dependencies.
+> characters, Schur polynomials, Kronecker coefficients, isotypic projectors and the Schur-Weyl
+> measure. Built from scratch on `numpy` and the standard library, with no representation-theory
+> or combinatorics dependencies.
 
 Schur-Weyl duality splits `(C^d)^(tensor n)` under the commuting actions of `S_n` (permuting the
 tensor factors) and `GL_d` (acting diagonally) into blocks indexed by partitions `lambda |- n`
@@ -104,6 +104,62 @@ character((3, 1), (2, 1, 1))        #  1
 rows, cols, table = character_table(5)
 ```
 
+## Kronecker coefficients
+
+Tensor two irreducible representations of `S_n` and the result is no longer irreducible. The
+Kronecker coefficient `g(lambda, mu, nu)` counts how many copies of `S^lambda` sit inside
+`S^mu (x) S^nu`. Since characters multiply under tensor products, it is an inner product of
+characters -- a finite sum over conjugacy classes, with `z_rho` the centraliser size of the class
+`rho`:
+
+    g(lambda, mu, nu) = (1/n!) * sum over sigma in S_n of chi^lambda(sigma) chi^mu(sigma) chi^nu(sigma)
+                      = sum over rho |- n of chi^lambda(rho) chi^mu(rho) chi^nu(rho) / z_rho
+
+The same formula works for any number of partitions of the same `n`, so `kronecker_coefficient` is
+variadic. With two arguments it degenerates to character orthogonality, `g(lambda, mu) =
+delta_{lambda mu}`. No positive combinatorial formula for these numbers is known in general;
+computing them from characters is exactly what this does.
+
+```python
+from schur_weyl import partitions, kronecker_coefficient
+
+kronecker_coefficient((3,), (2, 1), (2, 1))       # 1
+kronecker_coefficient((3,), (2, 1), (1, 1, 1))    # 0
+kronecker_coefficient((2, 1), (2, 1))             # 1  -- orthogonality
+kronecker_coefficient((2, 1), (3,))               # 0
+
+# S^(2,1) (x) S^(2,1) = S^(3) + S^(2,1) + S^(1,1,1)
+[kronecker_coefficient(lam, (2, 1), (2, 1)) for lam in partitions(3)]
+# [1, 1, 1]
+```
+
+## Projectors
+
+The isotypic projector cuts `(C^d)^(tensor n)` down to the `lambda` block. It is a class sum of the
+permutation action `U(sigma)`, which shuffles the tensor factors:
+
+    P_lambda = (f^lambda / n!) * sum over sigma in S_n of chi^lambda(sigma) U(sigma)
+
+`isotypic_proj` builds this as a dense `d^n x d^n` matrix, which gets expensive fast. When you only
+need to *apply* it, `apply_isotypic_proj` sums the transposed copies of the tensor directly, so
+nothing larger than the input is ever allocated. The `n` axes you name are the tensor factors, in
+slot order; every other axis is carried along untouched, which lets you project a batch of tensors,
+or one leg of a larger network, in a single call.
+
+```python
+import numpy as np
+from schur_weyl import partitions, isotypic_proj, apply_isotypic_proj
+
+P = isotypic_proj((2, 1), d=2)          # dense 8 x 8, P @ P == P
+
+T = np.random.default_rng(0).normal(size=(4, 2, 2, 2, 5))
+Q = apply_isotypic_proj(T, (2, 1), axes=(1, 2, 3))
+Q.shape                                 # (4, 2, 2, 2, 5) -- axes 0 and 4 ride along
+
+# the blocks resolve the identity and are mutually orthogonal
+sum(apply_isotypic_proj(T, lam, axes=(1, 2, 3)) for lam in partitions(3))  # == T
+```
+
 ## Schur-Weyl measure
 
 Measure `k` i.i.d. copies of a state `rho` in the Schur basis and you get a random partition, with
@@ -128,7 +184,8 @@ schur_weyl_measure(spectrum=[0.7, 0.3], k=4)
 - [symmetric_group](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/symmetric_group.py): Permutations as 0-indexed one-line tuples: composition, inverse, cycle type, conjugacy class sizes
 - [character](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/character.py): Irreducible characters of `S_n` via the Murnaghan-Nakayama rule; full character tables
 - [symmetric_functions](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/symmetric_functions.py): Schur polynomials (Jacobi-Trudi) and power-sum symmetric functions
-- [isotypic](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/isotypic.py): Isotypic projectors on tensor space, built from class sums of the permutation action
+- [kronecker](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/kronecker.py): Kronecker coefficients `g(lambda, mu, nu, ...)` -- the multiplicity of `S^lambda` in a tensor product of Specht modules -- as a character sum over conjugacy classes
+- [isotypic](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/isotypic.py): Isotypic projectors on tensor space, built from class sums of the permutation action; `apply_isotypic_proj` applies `P_lambda` along chosen axes of a tensor without materialising the matrix
 - [sw_measure](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/sw_measure.py): The Schur-Weyl measure for i.i.d. copies of a state
 - [young_orthonormal](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/young_orthonormal.py): Young's orthogonal form: explicit irrep matrices indexed by standard tableaux, and the Jucys-Murphy elements
 

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 from .symmetric_group import all_permutations_by_cycle_type, permutation_inverse
 from .character import character
@@ -39,7 +41,7 @@ def isotypic_proj(lam: tuple[int, ...], d: int) -> np.ndarray:
 
 def _axes_transpose(ndim: int, axes: tuple[int, ...], sigma: tuple[int, ...]) -> tuple[int, ...]:
     inv = permutation_inverse(sigma)
-    perm = [0] * ndim
+    perm = list(range(ndim))
     for i, axis in enumerate(axes):
         perm[axis] = axes[inv[i]]
     return tuple(perm)

@@ -14,6 +14,8 @@ const SECTIONS = [
   ["diagrams", "Young diagrams"],
   ["tableaux", "Tableaux"],
   ["characters", "Characters"],
+  ["kronecker", "Kronecker coefficients"],
+  ["projectors", "Projectors"],
   ["measure", "Schur–Weyl measure"],
   ["reference", "Reference"],
 ] as const;
@@ -25,7 +27,8 @@ const MODULES: [string, string][] = [
   ["symmetric_group", "Permutations as one-line tuples: compose, invert, cycle type"],
   ["character", "Irreducible characters of S_n via Murnaghan–Nakayama; character tables"],
   ["symmetric_functions", "Schur polynomials (Jacobi–Trudi) and power sums"],
-  ["isotypic", "Isotypic projectors on tensor space"],
+  ["kronecker", "Kronecker coefficients as a character sum over conjugacy classes"],
+  ["isotypic", "Isotypic projectors on tensor space, as a matrix or applied along tensor axes"],
   ["sw_measure", "The Schur–Weyl measure for i.i.d. copies of a state"],
   ["young_orthonormal", "Youngs orthogonal form and the Jucys–Murphy elements"],
 ];
@@ -167,6 +170,73 @@ character((2, 1), (3,))             # -1
 character((3, 1), (2, 1, 1))        #  1
 
 rows, cols, table = character_table(5)
+`}
+        />
+      </section>
+
+      <section id="kronecker">
+        <h2>Kronecker coefficients</h2>
+        <p>
+          Tensor two irreducible representations of <Tex math="S_n" /> and the result is no longer
+          irreducible. The Kronecker coefficient <Tex math="g(\lambda, \mu, \nu)" /> counts how many
+          copies of <Tex math="S^\lambda" /> sit inside <Tex math="S^\mu \otimes S^\nu" />. Since
+          characters multiply under tensor products, it is an inner product of characters. A finite
+          sum over conjugacy classes, with <Tex math="z_\rho" /> the centraliser size of the class{" "}
+          <Tex math="\rho" />:
+        </p>
+        <TexBlock math="g(\lambda, \mu, \nu) \;=\; \frac{1}{n!} \sum_{\sigma \in S_n} \chi^\lambda(\sigma)\, \chi^\mu(\sigma)\, \chi^\nu(\sigma) \;=\; \sum_{\rho \vdash n} \frac{\chi^\lambda(\rho)\, \chi^\mu(\rho)\, \chi^\nu(\rho)}{z_\rho}" />
+        <p>
+          The same formula works for any number of partitions of the same <Tex math="n" />, so{" "}
+          <code>kronecker_coefficient</code> is variadic. With two arguments it degenerates to
+          character orthogonality, <Tex math="g(\lambda, \mu) = \delta_{\lambda\mu}" />. No positive
+          combinatorial formula for these numbers is known in general — computing them from
+          characters is exactly what this does.
+        </p>
+        <CodeBlock
+          code={`
+from schur_weyl import partitions, kronecker_coefficient
+
+kronecker_coefficient((3,), (2, 1), (2, 1))       # 1
+kronecker_coefficient((3,), (2, 1), (1, 1, 1))    # 0
+kronecker_coefficient((2, 1), (2, 1))             # 1  -- orthogonality
+kronecker_coefficient((2, 1), (3,))               # 0
+
+# S^(2,1) tensor S^(2,1) = S^(3) + S^(2,1) + S^(1,1,1)
+[kronecker_coefficient(lam, (2, 1), (2, 1)) for lam in partitions(3)]
+# [1, 1, 1]
+`}
+        />
+      </section>
+
+      <section id="projectors">
+        <h2>Projectors</h2>
+        <p>
+          The isotypic projector cuts <Tex math="(\mathbb{C}^d)^{\otimes n}" /> down to the{" "}
+          <Tex math="\lambda" /> block. It is a class sum of the permutation action{" "}
+          <Tex math="U(\sigma)" />, which shuffles the tensor factors:
+        </p>
+        <TexBlock math="P_\lambda \;=\; \frac{f^\lambda}{n!} \sum_{\sigma \in S_n} \chi^\lambda(\sigma)\, U(\sigma)" />
+        <p>
+          <code>isotypic_proj</code> builds this as a dense <Tex math="d^n \times d^n" /> matrix,
+          which gets expensive fast. When you only need to <em>apply</em> it,{" "}
+          <code>apply_isotypic_proj</code> sums the transposed copies of the tensor directly, so
+          nothing larger than the input is ever allocated. The <Tex math="n" /> axes you name are
+          the tensor factors, in slot order; every other axis is carried along untouched, which lets
+          you project a batch of tensors, or one leg of a larger network, in a single call.
+        </p>
+        <CodeBlock
+          code={`
+import numpy as np
+from schur_weyl import partitions, isotypic_proj, apply_isotypic_proj
+
+P = isotypic_proj((2, 1), d=2)          # dense 8 x 8, P @ P == P
+
+T = np.random.default_rng(0).normal(size=(4, 2, 2, 2, 5))
+Q = apply_isotypic_proj(T, (2, 1), axes=(1, 2, 3))
+Q.shape                                 # (4, 2, 2, 2, 5) -- axes 0 and 4 ride along
+
+# the blocks resolve the identity and are mutually orthogonal
+sum(apply_isotypic_proj(T, lam, axes=(1, 2, 3)) for lam in partitions(3))  # == T
 `}
         />
       </section>

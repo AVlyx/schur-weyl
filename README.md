@@ -9,7 +9,7 @@ Schur–Weyl duality decomposes $(\mathbb{C}^d)^{\otimes n}$ under the commuting
 
 $$(\mathbb{C}^d)^{\otimes n} \cong \bigoplus_{\lambda} S^\lambda \otimes V_\lambda^d$$
 
-This package implements the combinatorics and linear algebra needed to work with that decomposition directly: partitions and Young tableaux, dimension formulas, symmetric-group characters via Murnaghan–Nakayama, Schur polynomials, isotypic projectors on tensor space, the Schur–Weyl measure, and Young's orthogonal form for the irreducible representations of $S_n$.
+This package implements the combinatorics and linear algebra needed to work with that decomposition directly: partitions and Young tableaux, dimension formulas, symmetric-group characters via Murnaghan–Nakayama, Schur polynomials, Kronecker coefficients, isotypic projectors on tensor space, the Schur–Weyl measure, and Young's orthogonal form for the irreducible representations of $S_n$.
 
 ## Installation
 
@@ -35,16 +35,20 @@ pip install -e ".[dev]"
 | [`symmetric_group`](src/schur_weyl/symmetric_group.py) | Permutations as 0-indexed one-line tuples: composition, inverse, cycle type, conjugacy class sizes |
 | [`character`](src/schur_weyl/character.py) | Irreducible characters $\chi^\lambda(\mu)$ of $S_n$ via the Murnaghan–Nakayama rule; full character tables |
 | [`symmetric_functions`](src/schur_weyl/symmetric_functions.py) | Schur polynomials (Jacobi–Trudi) and power-sum symmetric functions |
-| [`isotypic`](src/schur_weyl/isotypic.py) | Isotypic projectors $P_\lambda$ acting on $(\mathbb{C}^d)^{\otimes n}$, built from class sums of the permutation action |
+| [`kronecker`](src/schur_weyl/kronecker.py) | Kronecker coefficients $g(\lambda, \mu, \nu, \dots)$ — the multiplicity of $S^\lambda$ in a tensor product of Specht modules — as a character sum over conjugacy classes |
+| [`isotypic`](src/schur_weyl/isotypic.py) | Isotypic projectors $P_\lambda$ acting on $(\mathbb{C}^d)^{\otimes n}$, built from class sums of the permutation action; `apply_isotypic_proj` applies $P_\lambda$ along chosen axes of a tensor without materialising the matrix |
 | [`sw_measure`](src/schur_weyl/sw_measure.py) | The Schur–Weyl measure $\Pr[\lambda] = f^\lambda\, s_\lambda(\mathrm{spec}\,\rho)$ for i.i.d. copies of a state $\rho$ |
 | [`young_orthonormal`](src/schur_weyl/young_orthonormal.py) | Young's orthogonal form: explicit irrep matrices $\rho^\lambda(\sigma)$ indexed by standard tableaux, and the Jucys–Murphy elements |
 
 ## Usage
 
 ```python
+import numpy as np
+
 from schur_weyl import (
     partitions, dim_specht, dim_weyl, kostka,
-    schur_polynomial, isotypic_proj,
+    schur_polynomial, kronecker_coefficient,
+    isotypic_proj, apply_isotypic_proj,
 )
 from schur_weyl.character import character, character_table
 from schur_weyl.sw_measure import schur_weyl_measure
@@ -60,8 +64,18 @@ character((2, 1), (3,))     # -> -1
 schur_weyl_measure(spectrum=[0.7, 0.3], k=4)
 # -> {(4,): 0.4141, (3, 1): 0.4977, (2, 2): 0.0882, (2, 1, 1): 0.0, (1, 1, 1, 1): 0.0}
 
+# Kronecker coefficients: the multiplicity of S^lam inside a tensor product
+# of Specht modules, g(lam, mu, nu, ...), for any number of partitions of n
+kronecker_coefficient((3,), (2, 1), (2, 1))       # -> 1
+kronecker_coefficient((3,), (2, 1), (1, 1, 1))    # -> 0
+
 # the isotypic projector on (C^d)^{\otimes n}
 P = isotypic_proj((2, 1), d=2)   # np.ndarray, P @ P == P
+
+# ... or apply it along chosen axes of a tensor, without ever building
+# the d^k x d^k matrix. Axes outside `axes` are carried along untouched.
+T = np.random.default_rng(0).normal(size=(4, 2, 2, 2, 5))
+apply_isotypic_proj(T, (2, 1), axes=(1, 2, 3))    # -> same shape as T
 ```
 
 ## Testing
