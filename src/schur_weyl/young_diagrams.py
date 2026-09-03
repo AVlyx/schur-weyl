@@ -5,7 +5,7 @@ def partitions(k: int, max_part: Optional[int] = None, max_height: Optional[int]
     """Generate the partitions of k. All the non-increasing vectors of positive integers summing to k.
 
     Args:
-        k (int): k
+        k (int):  The size of the Symmetric group
         max_part (Optional[int], optional): The maximum number of columns in any row of the Young tableau. Defaults to None.
         max_height (Optional[int], optional): The maximum number of rows. Defaults to None.
 

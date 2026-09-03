@@ -1,7 +1,8 @@
 from itertools import permutations
-from typing import Generator
+from typing import Any, Generator
 from collections import Counter, defaultdict
 from math import factorial
+from .young_diagrams import partitions
 
 
 def permutation_identity(n) -> tuple[int, ...]:
@@ -104,6 +105,27 @@ def permutation_cycle_type(perm: tuple[int, ...]) -> tuple[int, ...]:
     return tuple(sorted(cycles, reverse=True))
 
 
+def permutation_conjugacy_classes(k: int) -> Generator[tuple[int, ...], None, None]:
+    """All the permutation conjugacy class represented by their cycle type.
+    Simply the partitions of k.
+
+    Args:
+        k (int): The size of the Symmetric group
+
+    Yields:
+        Generator[tuple[int, ...], None, None]: _description_
+    """
+    return partitions(k)
+
+
+def _z_for_permutation_conjugacy_class_size(cycle_type: tuple[int, ...]) -> int:
+    counts = Counter(cycle_type)
+    z: int = 1
+    for cycle_len, cycle_count in counts.items():
+        z *= cycle_len**cycle_count * factorial(cycle_count)
+    return z
+
+
 def permutation_conjugacy_class_size(cycle_type: tuple[int, ...]) -> int:
     """The number of permutations of the same cycle type
 
@@ -119,8 +141,5 @@ def permutation_conjugacy_class_size(cycle_type: tuple[int, ...]) -> int:
         >>> permutation_conjugacy_class_size((2,1,1))
         6
     """
-    counts = Counter(cycle_type)
-    z = 1
-    for cycle_len, cycle_count in counts.items():
-        z *= cycle_len**cycle_count * factorial(cycle_count)
-    return factorial(sum(cycle_type)) // z
+
+    return factorial(sum(cycle_type)) // _z_for_permutation_conjugacy_class_size(cycle_type)
