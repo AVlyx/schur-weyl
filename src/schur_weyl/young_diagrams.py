@@ -1,16 +1,33 @@
 from typing import Generator, Optional
 
 
-def partitions(k: int, max_part: Optional[int] = None, max_height: Optional[int] = None) -> Generator[tuple[int, ...], None, None]:
+def partitions(
+    k: int,
+    max_part: Optional[int] = None,
+    max_height: Optional[int] = None,
+    *,
+    min_height: Optional[int] = None,
+    height: Optional[int] = None,
+) -> Generator[tuple[int, ...], None, None]:
     """Generate the partitions of k. All the non-increasing vectors of positive integers summing to k.
+
+    The height of a partition is its number of rows, len(lam). Bounding it is the
+    cheaper way to ask for partitions of a given height: the bounds prune the
+    recursion instead of filtering its output.
 
     Args:
         k (int):  The size of the Symmetric group
         max_part (Optional[int], optional): The maximum number of columns in any row of the Young tableau. Defaults to None.
         max_height (Optional[int], optional): The maximum number of rows. Defaults to None.
+        min_height (Optional[int], optional): The minimum number of rows. Keyword only. Defaults to None.
+        height (Optional[int], optional): The exact number of rows, i.e. both bounds at once. Keyword
+            only, and mutually exclusive with min_height / max_height. Defaults to None.
 
     Yields:
         Generator[tuple[int, ...], None, None]: The partitions.
+
+    Raises:
+        ValueError: If height is combined with min_height or max_height.
 
     Examples:
         >>> list(partitions(4))
@@ -21,19 +38,32 @@ def partitions(k: int, max_part: Optional[int] = None, max_height: Optional[int]
 
         >>> list(partitions(5, 2, 4))
         [(2, 2, 1), (2, 1, 1, 1)]
+
+        >>> list(partitions(5, height=2))
+        [(4, 1), (3, 2)]
+
+        >>> list(partitions(4, min_height=3))
+        [(2, 1, 1), (1, 1, 1, 1)]
     """
+    if height is not None:
+        if min_height is not None or max_height is not None:
+            raise ValueError("height is exclusive with min_height / max_height")
+        min_height = max_height = height
     if max_part is None:
         max_part = k
     if max_height is None:
         max_height = k
+    if min_height is None:
+        min_height = 0
     if k == 0:
-        yield ()
+        if min_height <= 0:
+            yield ()
         return
-    if max_height == 0:
+    if max_height <= 0 or k < min_height:
         return
 
     for first in range(min(k, max_part), 0, -1):
-        for rest in partitions(k - first, first, max_height - 1):
+        for rest in partitions(k - first, first, max_height - 1, min_height=min_height - 1):
             yield (first,) + rest
 
 

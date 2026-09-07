@@ -1,8 +1,10 @@
+from functools import lru_cache
 from .symmetric_group import _z_for_permutation_conjugacy_class_size, permutation_conjugacy_classes
 from .character import character
 from math import prod
 
 
+@lru_cache
 def kronecker_coefficient(*partitions_: tuple[int, ...]) -> int:
     r"""Get the kronecker coefficient for multiple partitions.
 
