@@ -3,7 +3,8 @@ import pytest
 
 from schur_weyl.character import character
 from schur_weyl.dimensions import dim_weyl
-from schur_weyl.symmetric_functions import power_sum, schur_polynomial
+from schur_weyl.symmetric_functions import monomial_in_schur_basis, monomial_symmetric, power_sum, schur_polynomial
+from schur_weyl.tableaux import kostka
 from schur_weyl.young_diagrams import partitions
 
 
@@ -20,3 +21,19 @@ def test_power_sum_expands_over_characters(n):
 def test_schur_at_all_ones_is_weyl_dim(n, d):
     for lam in partitions(n):
         assert np.isclose(schur_polynomial(lam, [1.0] * d), dim_weyl(lam, d))
+
+
+@pytest.mark.parametrize("n", range(1, 7))
+def test_schur_expands_over_monomials(n):
+    xs = list(np.random.default_rng(1).random(4))
+    for lam in partitions(n):
+        expansion = sum(kostka(lam, mu) * monomial_symmetric(mu, xs) for mu in partitions(n))
+        assert np.isclose(schur_polynomial(lam, xs), expansion)
+
+
+@pytest.mark.parametrize("n", range(1, 7))
+def test_monomial_in_schur_basis(n):
+    xs = list(np.random.default_rng(2).random(4))
+    for mu in partitions(n):
+        expansion = sum(c * schur_polynomial(nu, xs) for c, nu in monomial_in_schur_basis(mu))
+        assert np.isclose(monomial_symmetric(mu, xs), expansion)

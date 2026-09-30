@@ -31,7 +31,7 @@ pip install -e ".[dev]"
 |---|---|
 | [`young_diagrams`](src/schur_weyl/young_diagrams.py) | Partitions, conjugation, hook lengths, content, dominance order, addable/removable corners |
 | [`dimensions`](src/schur_weyl/dimensions.py) | $f^\lambda$ (Specht module dimension, hook-length formula) and $\dim V_\lambda^d$ (Weyl module dimension, content formula) |
-| [`tableaux`](src/schur_weyl/tableaux.py) | Standard and semistandard Young tableaux, Kostka numbers, reading words |
+| [`tableaux`](src/schur_weyl/tableaux.py) | Standard and semistandard Young tableaux, Kostka numbers, full Kostka matrices and their inverses, reading words |
 | [`symmetric_group`](src/schur_weyl/symmetric_group.py) | Permutations as 0-indexed one-line tuples: composition, inverse, cycle type, conjugacy class sizes |
 | [`character`](src/schur_weyl/character.py) | Irreducible characters $\chi^\lambda(\mu)$ of $S_n$ via the Murnaghan–Nakayama rule; full character tables |
 | [`symmetric_functions`](src/schur_weyl/symmetric_functions.py) | Schur polynomials (Jacobi–Trudi) and power-sum symmetric functions |
