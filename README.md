@@ -39,6 +39,7 @@ pip install -e ".[dev]"
 | [`isotypic`](src/schur_weyl/isotypic.py) | Isotypic projectors $P_\lambda$ acting on $(\mathbb{C}^d)^{\otimes n}$, built from class sums of the permutation action; `apply_isotypic_proj` applies $P_\lambda$ along chosen axes of a tensor without materialising the matrix |
 | [`sw_measure`](src/schur_weyl/sw_measure.py) | The Schur–Weyl measure $\Pr[\lambda] = f^\lambda\, s_\lambda(\mathrm{spec}\,\rho)$ for i.i.d. copies of a state $\rho$ |
 | [`young_orthonormal`](src/schur_weyl/young_orthonormal.py) | Young's orthogonal form: explicit irrep matrices $\rho^\lambda(\sigma)$ indexed by standard tableaux, and the Jucys–Murphy elements |
+| [`schur_transform`](src/schur_weyl/schur_transform.py) | The Schur transform: a real orthogonal $U$ with $U P(\sigma) U^T = \bigoplus_\lambda \mathbb{1} \otimes \rho^\lambda(\sigma)$ in Young's orthogonal form and $U g^{\otimes n} U^T = \bigoplus_\lambda q_\lambda(g) \otimes \mathbb{1}$, also given as one isometry $V_{\lambda,T}$ per standard tableau |
 
 ## Usage
 

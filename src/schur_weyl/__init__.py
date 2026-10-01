@@ -4,3 +4,4 @@ from .tableaux import standard_young_tableaux, semi_standard_young_tableau_by_co
 from .symmetric_functions import schur_polynomial, power_sum, monomial_symmetric, monomial_in_schur_basis
 from .isotypic import isotypic_proj, apply_isotypic_proj
 from .kronecker import kronecker_coefficient
+from .schur_transform import schur_transform, schur_transform_matrix
