@@ -1,3 +1,13 @@
+r"""Symmetric polynomials: Schur, power-sum and monomial.
+
+The Schur polynomial $s_\lambda$ is evaluated by the Jacobi–Trudi determinant
+in the complete homogeneous symmetric polynomials; it is what the
+[Schur–Weyl measure][schur_weyl.sw_measure.schur_weyl_measure] evaluates. The
+module also gives the power sums $p_\mu$, the monomial symmetric polynomials
+$m_\mu$, and the expansion of $m_\mu$ in the Schur basis, a row of the inverse
+Kostka matrix.
+"""
+
 from collections import Counter
 
 import numpy as np

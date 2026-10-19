@@ -1,3 +1,32 @@
+r"""Kronecker coefficients of the symmetric group.
+
+Tensor two irreducible representations of $S_n$ and the result is no longer
+irreducible. The Kronecker coefficient $g(\lambda, \mu, \nu)$ counts how many
+copies of $S^\lambda$ sit inside $S^\mu \otimes S^\nu$. Since characters
+multiply under tensor products, it is an inner product of characters: a finite
+sum over conjugacy classes, with $z_\rho$ the centralizer size of the class
+$\rho$,
+
+$$
+g(\lambda, \mu, \nu)
+\;=\; \frac{1}{n!} \sum_{\sigma \in S_n} \chi^\lambda(\sigma)\, \chi^\mu(\sigma)\, \chi^\nu(\sigma)
+\;=\; \sum_{\rho \vdash n} \frac{\chi^\lambda(\rho)\, \chi^\mu(\rho)\, \chi^\nu(\rho)}{z_\rho} .
+$$
+
+The same formula works for any number of partitions of the same $n$, so
+`kronecker_coefficient` is variadic. With two arguments it reduces to character
+orthogonality, $g(\lambda, \mu) = \delta_{\lambda\mu}$. No positive combinatorial
+formula for these numbers is known in general — computing them from characters
+is exactly what this does.
+
+Examples:
+    $S^{(2,1)} \otimes S^{(2,1)} = S^{(3)} \oplus S^{(2,1)} \oplus S^{(1,1,1)}$:
+
+    >>> from schur_weyl import partitions, kronecker_coefficient
+    >>> [kronecker_coefficient(lam, (2, 1), (2, 1)) for lam in partitions(3)]
+    [1, 1, 1]
+"""
+
 from functools import lru_cache
 from .symmetric_group import _z_for_permutation_conjugacy_class_size, permutation_conjugacy_classes
 from .character import character

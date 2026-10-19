@@ -1,4 +1,37 @@
-"""The Schur transform: an explicit unitary realising Schur-Weyl duality,
+r"""The Schur transform: an explicit unitary realising Schur–Weyl duality.
+
+The Schur transform is a real orthogonal $d^n \times d^n$ matrix $U$ that
+block-diagonalizes the permutation action $P(\sigma)$ and the diagonal action
+$g^{\otimes n}$ at the same time,
+
+$$
+U P(\sigma) U^{\mathsf T} = \bigoplus_\lambda \mathbb{1}_{\dim V_\lambda^d} \otimes \rho^\lambda(\sigma),
+\qquad
+U g^{\otimes n} U^{\mathsf T} = \bigoplus_\lambda q_\lambda(g) \otimes \mathbb{1}_{f^\lambda},
+$$
+
+with $\rho^\lambda$ the irreducible representations of $S_n$ in Young's
+orthogonal form ([`young_orthogonal`][schur_weyl.young_orthonormal.young_orthogonal])
+and $q_\lambda$ those of $GL_d$. `schur_transform(d, n)` gives the same
+transform as one isometry $V_{\lambda, T}$ per partition $\lambda$ and standard
+tableau $T$; `schur_transform_matrix(d, n)` stacks them into $U$. The
+construction is deterministic and real, with no eigensolver: it projects onto a
+joint eigenspace of the Jucys–Murphy elements for one tableau, and reaches the
+others with adjacent transpositions, exactly as in Young's orthogonal form, so
+the bases are aligned.
+
+Examples:
+    >>> import numpy as np
+    >>> from schur_weyl import schur_transform, schur_transform_matrix
+    >>> {lam: block.shape for lam, block in schur_transform(2, 2).items()}
+    {(2,): (1, 4, 3), (1, 1): (1, 4, 1)}
+    >>> U = schur_transform_matrix(2, 3)
+    >>> bool(np.allclose(U @ U.T, np.eye(8)))
+    True
+
+# Construction
+
+In plain-text notation, the transform is
 
     U : (C^d)^{otimes n} -> (+)_lam  V_lam^d (x) S^lam,
 

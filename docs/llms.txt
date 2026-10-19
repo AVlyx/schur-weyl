@@ -188,12 +188,13 @@ schur_weyl_measure(spectrum=[0.7, 0.3], k=4)
 - [isotypic](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/isotypic.py): Isotypic projectors on tensor space, built from class sums of the permutation action; `apply_isotypic_proj` applies `P_lambda` along chosen axes of a tensor without materialising the matrix
 - [sw_measure](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/sw_measure.py): The Schur-Weyl measure for i.i.d. copies of a state
 - [young_orthonormal](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/young_orthonormal.py): Young's orthogonal form: explicit irrep matrices indexed by standard tableaux, and the Jucys-Murphy elements
+- [schur_transform](https://github.com/AVlyx/schur-weyl/blob/main/src/schur_weyl/schur_transform.py): The Schur transform: a real orthogonal `U` that block-diagonalizes both the `S_n` and the `GL_d` action on `(C^d)^(tensor n)`, also given as one isometry per standard tableau
 
 Every function carries a docstring with worked examples.
 
 ## Optional
 
-- [Documentation site](https://avlyx.github.io/schur-weyl/): the same material with interactive figures for diagrams, tableaux, characters and the measure
+- [Documentation site](https://avlyx.github.io/schur-weyl/): the same material, one page per module, generated from the module and function docstrings
 - [Source repository](https://github.com/AVlyx/schur-weyl): full source, MIT licensed
 - [PyPI package](https://pypi.org/project/schur-weyl/): released versions
 - [Test suite](https://github.com/AVlyx/schur-weyl/tree/main/tests): checks closed-form identities (sum of `(f^lambda)^2 = n!`, character orthogonality, `P_lambda^2 = P_lambda`) rather than fixed outputs

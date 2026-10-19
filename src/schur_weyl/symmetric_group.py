@@ -1,3 +1,12 @@
+r"""Permutations of $S_n$ as 0-indexed one-line tuples.
+
+A permutation $\sigma$ of $\{0, \dots, n-1\}$ is the tuple
+$(\sigma(0), \dots, \sigma(n-1))$, and composition is
+$(\pi\sigma)(i) = \pi(\sigma(i))$. This module provides composition, inverses,
+cycle types, and the conjugacy classes of $S_n$ with their sizes, which the
+character sums elsewhere in the package run over.
+"""
+
 from itertools import permutations
 from typing import Any, Generator
 from collections import Counter, defaultdict

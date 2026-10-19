@@ -1,0 +1,131 @@
+[project]
+site_name = "schur-weyl"
+site_url = "https://avlyx.github.io/schur-weyl/"
+site_description = "Partitions, Young tableaux, symmetric-group characters and Schur–Weyl duality, built from scratch on numpy and the standard library."
+site_author = "Anton Van Cleemput"
+copyright = "Copyright &copy; 2026 Anton Van Cleemput — released under the <a href=\"https://github.com/AVlyx/schur-weyl/blob/main/LICENSE\">MIT License</a>"
+
+repo_url = "https://github.com/AVlyx/schur-weyl"
+repo_name = "AVlyx/schur-weyl"
+edit_uri = "edit/main/docs/"
+
+nav = [
+  { "Introduction" = "index.md" },
+  { "Modules" = [
+    { "Young diagrams" = "reference/young_diagrams.md" },
+    { "Dimensions" = "reference/dimensions.md" },
+    { "Tableaux" = "reference/tableaux.md" },
+    { "Symmetric group" = "reference/symmetric_group.md" },
+    { "Characters" = "reference/character.md" },
+    { "Symmetric functions" = "reference/symmetric_functions.md" },
+    { "Kronecker coefficients" = "reference/kronecker.md" },
+    { "Isotypic projectors" = "reference/isotypic.md" },
+    { "Schur–Weyl measure" = "reference/sw_measure.md" },
+    { "Young's orthogonal form" = "reference/young_orthonormal.md" },
+    { "Schur transform" = "reference/schur_transform.md" },
+  ] },
+  { "License" = "license.md" },
+]
+
+extra_css = [
+  "https://unpkg.com/katex@0.16.22/dist/katex.min.css",
+]
+extra_javascript = [
+  "javascripts/katex.js",
+  "https://unpkg.com/katex@0.16.22/dist/katex.min.js",
+  "https://unpkg.com/katex@0.16.22/dist/contrib/auto-render.min.js",
+]
+
+[project.theme]
+language = "en"
+features = [
+  "content.action.edit",
+  "content.code.annotate",
+  "content.code.copy",
+  "content.code.select",
+  "content.footnote.tooltips",
+  "content.tooltips",
+  "navigation.footer",
+  "navigation.indexes",
+  "navigation.instant",
+  "navigation.instant.prefetch",
+  "navigation.path",
+  "navigation.sections",
+  "navigation.top",
+  "navigation.tracking",
+  "search.highlight",
+  "toc.follow",
+]
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch to light mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to system preference"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/AVlyx/schur-weyl"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/python"
+link = "https://pypi.org/project/schur-weyl/"
+
+[project.markdown_extensions]
+abbr = {}
+admonition = {}
+attr_list = {}
+def_list = {}
+footnotes = {}
+md_in_html = {}
+tables = {}
+toc.permalink = true
+pymdownx.arithmatex.generic = true
+pymdownx.betterem = {}
+pymdownx.caret = {}
+pymdownx.details = {}
+pymdownx.highlight.anchor_linenums = true
+pymdownx.highlight.line_spans = "__span"
+pymdownx.highlight.pygments_lang_class = true
+pymdownx.inlinehilite = {}
+pymdownx.keys = {}
+pymdownx.magiclink = {}
+pymdownx.mark = {}
+pymdownx.smartsymbols = {}
+# The license page pulls in LICENSE from the repository root.
+pymdownx.snippets.base_path = ["."]
+pymdownx.snippets.check_paths = true
+pymdownx.superfences = {}
+pymdownx.tabbed.alternate_style = true
+pymdownx.tilde = {}
+
+# Every page is rendered from the docstrings in src/ by static analysis,
+# so building the docs does not need the package installed.
+[project.plugins.mkdocstrings.handlers.python]
+paths = ["src"]
+
+[project.plugins.mkdocstrings.handlers.python.options]
+docstring_style = "google"
+heading_level = 2
+members_order = "source"
+separate_signature = true
+show_root_heading = false
+show_root_toc_entry = false
+show_signature_annotations = true
+show_source = true
+filters = ["!^_"]
+
+# Docstrings write "Returns: int: ...", so read the part before the colon as a type.
+[project.plugins.mkdocstrings.handlers.python.options.docstring_options]
+returns_named_value = false

@@ -1,3 +1,29 @@
+r"""Dimensions of the irreducible representations of $S_n$ and $GL_d$.
+
+The hook-length formula turns the hooks $h(i, j)$ of $\lambda$ into the
+dimension of the Specht module $S^\lambda$, which is also the number of standard
+tableaux of shape $\lambda$:
+
+$$
+f^\lambda = \frac{n!}{\prod_{(i,j) \in \lambda} h(i,j)} .
+$$
+
+The content formula gives the dimension of the Weyl module $V_\lambda^d$ of
+$GL_d$, which is the number of semistandard tableaux of shape $\lambda$ with
+entries in $1, \dots, d$, and vanishes when $\lambda$ has more than $d$ rows:
+
+$$
+\dim V_\lambda^d = \prod_{(i,j) \in \lambda} \frac{d + c(i,j)}{h(i,j)} .
+$$
+
+Examples:
+    >>> from schur_weyl import dim_specht, dim_weyl
+    >>> dim_specht((3, 2, 1))
+    16
+    >>> dim_weyl((2, 1), 3)
+    8
+"""
+
 from math import factorial
 from .young_diagrams import cells, hook_lenght
 

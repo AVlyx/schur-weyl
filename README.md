@@ -1,6 +1,6 @@
 # schur-weyl
 
-[![Documentation](https://img.shields.io/badge/docs-readthedocs-blue?style=for-the-badge&logo=readthedocs&logoColor=white)](https://avlyx.github.io/schur-weyl/)
+[![Documentation](https://img.shields.io/badge/docs-zensical-blue?style=for-the-badge&logo=materialformkdocs&logoColor=white)](https://avlyx.github.io/schur-weyl/)
 [![PyPI](https://img.shields.io/badge/pypi-package-blue?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/schur-weyl/)
 
 Tools from Schur–Weyl duality, built from scratch on top of `numpy` and the Python standard library — no representation-theory or combinatorics dependencies.
@@ -86,6 +86,15 @@ pytest
 ```
 
 Tests live in [`tests/`](tests) and mirror the module layout; most assert the closed-form identities from the roadmap (e.g. $\sum_\lambda (f^\lambda)^2 = n!$, character-table orthogonality, $P_\lambda^2 = P_\lambda$, $tr\rho^\lambda(X_k)$ diagonal with content eigenvalues) rather than fixed expected outputs.
+
+## Documentation
+
+The documentation site is built with [Zensical](https://zensical.org) and deployed to GitHub Pages on every push to `main`. Its pages are generated from the docstrings: each module page is the module docstring followed by its functions, and the files in [`docs/`](docs) only say which module goes on which page — so to change a page, edit the docstring. To preview it locally:
+
+```bash
+pip install -e ".[docs]"
+zensical serve
+```
 
 ## License
 

@@ -1,3 +1,26 @@
+r"""Partitions and Young diagrams.
+
+A partition $\lambda = (\lambda_1 \ge \lambda_2 \ge \cdots)$ of $n$ is drawn as
+rows of boxes, $\lambda_i$ boxes in row $i$. Partitions are plain tuples in
+weakly decreasing order, and cells are 0-indexed $(i, j)$ pairs. Conjugation
+transposes the diagram.
+
+The *hook* of a box is the box itself plus everything to its right and
+everything below it; its *content* is $c(i, j) = j - i$. The two numbers give
+the dimension formulas of [`dimensions`][schur_weyl.dimensions.dim_specht].
+
+Examples:
+    >>> from schur_weyl import partitions, partition_conjugate, hook_lenght
+    >>> [*partitions(4)]
+    [(4,), (3, 1), (2, 2), (2, 1, 1), (1, 1, 1, 1)]
+    >>> [*partitions(5, max_part=2)]
+    [(2, 2, 1), (2, 1, 1, 1), (1, 1, 1, 1, 1)]
+    >>> partition_conjugate((4, 3, 1))
+    (3, 2, 2, 1)
+    >>> hook_lenght((4, 3, 1), 0, 0)
+    6
+"""
+
 from typing import Generator, Optional
 
 

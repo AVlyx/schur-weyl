@@ -1,3 +1,26 @@
+r"""Standard and semistandard Young tableaux, and Kostka numbers.
+
+Fill the diagram with numbers, and you get a tableau — a tuple of rows.
+
+- A **standard** tableau uses $1, \dots, n$ once each, increasing along rows and
+  down columns. There are $f^\lambda$ of them.
+- A **semistandard** tableau draws entries from $1, \dots, d$ with repeats
+  allowed, weakly increasing along rows and strictly increasing down columns.
+  There are $\dim V_\lambda^d$ of them.
+
+The Kostka number $K_{\lambda\mu}$ counts the semistandard tableaux of shape
+$\lambda$ and content $\mu$, that is, with $\mu_1$ ones, $\mu_2$ twos, and so on.
+
+Examples:
+    >>> from schur_weyl import standard_young_tableaux, semi_standard_young_tableau, kostka
+    >>> [*standard_young_tableaux((2, 1))]
+    [((1, 2), (3,)), ((1, 3), (2,))]
+    >>> [*semi_standard_young_tableau((2, 1), 2)]
+    [((1, 1), (2,)), ((1, 2), (2,))]
+    >>> kostka((2, 1), (1, 1, 1))
+    2
+"""
+
 from __future__ import annotations
 
 from functools import lru_cache
@@ -202,7 +225,7 @@ def kostka_matrix(n: int) -> tuple[tuple[tuple[int, ...], ...], tuple[tuple[int,
 
     Returns:
         tuple[tuple[tuple[int, ...], ...], tuple[tuple[int, ...], ...]]: (ps, table) with ps the partitions
-            of n in the order produced by partitions(n), and table[a][b] = K_{ps[a], ps[b]}
+            of n in the order produced by partitions(n), and `table[a][b] = K_{ps[a], ps[b]}`
 
     Examples:
         >>> kostka_matrix(3)
@@ -236,7 +259,7 @@ def kostka_matrix(n: int) -> tuple[tuple[tuple[int, ...], ...], tuple[tuple[int,
 @lru_cache(maxsize=None)
 def inverse_kostka_matrix(n: int) -> tuple[tuple[tuple[int, ...], ...], tuple[tuple[int, ...], ...]]:
     """The inverse of kostka_matrix(n), which changes the Schur basis into the monomial basis:
-    m_mu = sum_nu table[mu][nu] s_nu.
+    `m_mu = sum_nu table[mu][nu] s_nu`.
 
     kostka_matrix(n) is upper unitriangular, so the inverse is solved column by column with numpy,
     in int64 when that cannot overflow and with python ints otherwise.
@@ -246,7 +269,7 @@ def inverse_kostka_matrix(n: int) -> tuple[tuple[tuple[int, ...], ...], tuple[tu
 
     Returns:
         tuple[tuple[tuple[int, ...], ...], tuple[tuple[int, ...], ...]]: (ps, table) with ps the partitions
-            of n in the order produced by partitions(n), and table[a][b] the entry of the inverse
+            of n in the order produced by partitions(n), and `table[a][b]` the entry of the inverse
 
     Examples:
         >>> inverse_kostka_matrix(3)

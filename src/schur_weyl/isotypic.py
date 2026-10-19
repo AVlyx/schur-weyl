@@ -1,3 +1,36 @@
+r"""Isotypic projectors on $(\mathbb{C}^d)^{\otimes n}$.
+
+The isotypic projector cuts $(\mathbb{C}^d)^{\otimes n}$ down to the $\lambda$
+block. It is a class sum of the permutation action $U(\sigma)$, which shuffles
+the tensor factors:
+
+$$
+P_\lambda \;=\; \frac{f^\lambda}{n!} \sum_{\sigma \in S_n} \chi^\lambda(\sigma)\, U(\sigma) .
+$$
+
+`isotypic_proj` builds this as a dense $d^n \times d^n$ matrix, which gets
+expensive fast. When you only need to *apply* it, `apply_isotypic_proj` sums the
+permuted copies of the tensor directly, so nothing larger than the input is
+ever allocated. The $n$ axes you name are the tensor factors, in slot order;
+every other axis is carried along untouched, which lets you project a batch of
+tensors, or one leg of a larger network, in a single call.
+
+Examples:
+    >>> import numpy as np
+    >>> from schur_weyl import partitions, isotypic_proj, apply_isotypic_proj
+    >>> P = isotypic_proj((2, 1), d=2)
+    >>> P.shape, bool(np.allclose(P @ P, P))
+    ((8, 8), True)
+
+    Axes 0 and 4 ride along, and the blocks resolve the identity:
+
+    >>> T = np.random.default_rng(0).normal(size=(4, 2, 2, 2, 5))
+    >>> apply_isotypic_proj(T, (2, 1), axes=(1, 2, 3)).shape
+    (4, 2, 2, 2, 5)
+    >>> bool(np.allclose(sum(apply_isotypic_proj(T, lam, axes=(1, 2, 3)) for lam in partitions(3)), T))
+    True
+"""
+
 from __future__ import annotations
 
 import numpy as np

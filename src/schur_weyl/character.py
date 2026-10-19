@@ -1,4 +1,20 @@
-"""Characters of the symmetric group via the Murnaghan-Nakayama rule."""
+r"""Characters of the symmetric group via the Murnaghan–Nakayama rule.
+
+$\chi^\lambda(\mu)$ is the character of the irreducible representation
+$S^\lambda$ of $S_n$ on the conjugacy class of cycle type $\mu$. It is computed
+by peeling border strips off $\lambda$ — the Murnaghan–Nakayama rule. Distinct
+rows of the character table are orthogonal.
+
+Examples:
+    >>> from schur_weyl.character import character, character_table
+    >>> character((2, 1), (3,))
+    -1
+    >>> character((3, 1), (2, 1, 1))
+    1
+    >>> rows, cols, table = character_table(5)
+    >>> len(rows)
+    7
+"""
 
 # Made by Claude
 
@@ -76,7 +92,7 @@ def character(lam: tuple[int, ...], cycle_type: tuple[int, ...]) -> int:
 
 def character_table(n: int):
     """(rows, cols, table) with rows/cols the partitions of n in the order
-    produced by partitions(n), and table[a][b] = chi^{rows[a]}(cols[b])."""
+    produced by partitions(n), and `table[a][b] = chi^{rows[a]}(cols[b])`."""
     ps = list(partitions(n))
     table = [[character(lam, mu) for mu in ps] for lam in ps]
     return ps, ps, table
